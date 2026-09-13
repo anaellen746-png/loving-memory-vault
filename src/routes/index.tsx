@@ -72,7 +72,7 @@ type Kit = {
 
 type CartLine = Kit & { quantity: number };
 
-const kits: Kit[] = [
+const kits: [Kit, Kit, Kit] = [
   { id: "kit-1", packages: 1, units: 100, label: "1 pacote", price: 69.9, compareAt: 129.9 },
   {
     id: "kit-3",
