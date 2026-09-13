@@ -11,8 +11,8 @@ import {
   LockKeyhole,
   Minus,
   PackageCheck,
-  Pix,
   Plus,
+  QrCode,
   ShieldCheck,
   ShoppingBag,
   Sparkles,
@@ -72,7 +72,7 @@ type Kit = {
 
 type CartLine = Kit & { quantity: number };
 
-const kits: Kit[] = [
+const kits: [Kit, Kit, Kit] = [
   { id: "kit-1", packages: 1, units: 100, label: "1 pacote", price: 69.9, compareAt: 129.9 },
   {
     id: "kit-3",
@@ -432,7 +432,7 @@ function Checkout({ cart, totals, payment, setPayment, onBack }: { cart: CartLin
           <div className="space-y-6">
             <fieldset className="rounded-lg border border-border bg-card p-5 sm:p-7"><legend className="px-2 text-lg font-bold">1. Dados do cliente</legend><div className="mt-3 grid gap-4 sm:grid-cols-2"><Field label="Nome completo" name="name" autoComplete="name" className="sm:col-span-2" /><Field label="CPF" name="cpf" inputMode="numeric" /><Field label="Telefone" name="phone" type="tel" autoComplete="tel" /><Field label="E-mail" name="email" type="email" autoComplete="email" className="sm:col-span-2" /></div></fieldset>
             <fieldset className="rounded-lg border border-border bg-card p-5 sm:p-7"><legend className="px-2 text-lg font-bold">2. Endereço de entrega</legend><div className="mt-3 grid gap-4 sm:grid-cols-6"><Field label="CEP" name="postal-code" autoComplete="postal-code" inputMode="numeric" className="sm:col-span-2" /><Field label="Rua" name="street" autoComplete="street-address" className="sm:col-span-4" /><Field label="Número" name="number" className="sm:col-span-2" /><Field label="Complemento" name="complement" required={false} className="sm:col-span-4" /><Field label="Bairro" name="district" className="sm:col-span-3" /><Field label="Cidade" name="city" autoComplete="address-level2" className="sm:col-span-2" /><Field label="UF" name="state" autoComplete="address-level1" maxLength={2} className="sm:col-span-1" /></div></fieldset>
-            <fieldset className="rounded-lg border border-border bg-card p-5 sm:p-7"><legend className="px-2 text-lg font-bold">3. Pagamento</legend><RadioGroup value={payment} onValueChange={setPayment} className="mt-3 grid gap-3 sm:grid-cols-2"><PaymentOption value="pix" icon={Pix} title="PIX" text="Pagamento à vista" /><PaymentOption value="card" icon={CreditCard} title="Cartão de crédito" text="Insira os dados do cartão" /></RadioGroup>{payment === "card" && <div className="mt-5 grid gap-4 sm:grid-cols-2"><Field label="Número do cartão" name="card-number" inputMode="numeric" className="sm:col-span-2" /><Field label="Validade" name="expiry" placeholder="MM/AA" /><Field label="CVV" name="cvv" inputMode="numeric" maxLength={4} /></div>}</fieldset>
+            <fieldset className="rounded-lg border border-border bg-card p-5 sm:p-7"><legend className="px-2 text-lg font-bold">3. Pagamento</legend><RadioGroup value={payment} onValueChange={setPayment} className="mt-3 grid gap-3 sm:grid-cols-2"><PaymentOption value="pix" icon={QrCode} title="PIX" text="Pagamento à vista" /><PaymentOption value="card" icon={CreditCard} title="Cartão de crédito" text="Insira os dados do cartão" /></RadioGroup>{payment === "card" && <div className="mt-5 grid gap-4 sm:grid-cols-2"><Field label="Número do cartão" name="card-number" inputMode="numeric" className="sm:col-span-2" /><Field label="Validade" name="expiry" placeholder="MM/AA" /><Field label="CVV" name="cvv" inputMode="numeric" maxLength={4} /></div>}</fieldset>
           </div>
           <aside className="h-fit rounded-lg border border-border bg-card p-5 shadow-sm lg:sticky lg:top-24 sm:p-6"><h3 className="text-lg font-bold">Resumo do pedido</h3><div className="my-5 space-y-4 border-y border-border py-5">{cart.map((item) => <div key={item.id} className="flex gap-3"><img src={pastilhasPrincipal.url} alt="" className="size-14 rounded-md border border-border object-cover" /><div className="min-w-0 flex-1"><p className="text-sm font-semibold">{item.label} ({item.units} un.)</p><p className="text-xs text-muted-foreground">Quantidade: {item.quantity}</p></div><span className="text-sm font-bold">{money(item.price * item.quantity)}</span></div>)}</div><OrderTotals totals={totals} />{submitted && <div role="status" className="mt-5 rounded-md border border-accent bg-accent/40 p-4 text-sm text-accent-foreground">Estrutura de checkout validada. Conecte um provedor de pagamento para concluir pedidos reais.</div>}<Button type="submit" className="mt-5 h-12 w-full font-extrabold"><LockKeyhole /> FINALIZAR PEDIDO</Button><p className="mt-3 text-center text-xs leading-relaxed text-muted-foreground">Esta demonstração não processa cobranças reais.</p></aside>
         </form>
